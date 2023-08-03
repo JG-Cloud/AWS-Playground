@@ -6,6 +6,7 @@
 # 
 
 import boto3
+from pprint import pprint
 
 client = boto3.client('ec2')
 
@@ -14,9 +15,29 @@ client = boto3.client('ec2')
 
 
 # get instanceIDs/Names where tag eq dev
-response = client.describe.instances(
- 
+response = client.describe_instances(
+    Filters=[
+        {
+            'Name' :'tag:env','Values': ['dev']
+        }
+    ]
 )
+
+Reservations = response['Reservations']
+
+for output in Reservations:
+    instances = output['Instances']
+
+    
+    # Get Instance Name / InstanceID from tag
+    for instance in instances:
+        InstanceId = instance['InstanceId']
+        tags = instance['Tags']
+        for tag in tags:
+            if tag['Key'] == 'Name':
+                InstanceName = tag['Value']
+
+    print(f"{InstanceId} : {InstanceName}")
 
 # add instanceIDs and Names to an array
 
