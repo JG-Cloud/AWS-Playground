@@ -44,10 +44,15 @@ def sys_argv():
 
 # get instanceIDs/Names where tag eq dev
 def get_ec2_data(stop_start_input, Token=None):
+    #tag key value as vars
+    tagkey = 'env'
+    tagvalue = 'dev'
+
+    # call to boto3 client
     response = client.describe_instances(
         Filters=[
             {
-                'Name' :'tag:env','Values': ['dev']
+                'Name' :'tag:'+ tagkey,'Values': [tagvalue]
             }
         ]
     )
