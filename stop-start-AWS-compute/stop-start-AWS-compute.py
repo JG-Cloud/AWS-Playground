@@ -56,8 +56,7 @@ def get_ec2_data(stop_start_input, Token=None):
             }
         ]
     )
-
-    Reservations = response['Reservations']
+    Reservations = response['Reservations']        
 
     for output in Reservations:
         instances = output['Instances']
@@ -70,9 +69,17 @@ def get_ec2_data(stop_start_input, Token=None):
             for tag in tags:
                 if tag['Key'] == 'Name':
                     InstanceName = tag['Value']
-
-        #print(f"{InstanceId} : {InstanceName}")
+                   
+        
+        # return values
         stop_start_ec2s(InstanceId, InstanceName, stop_start_input)
+
+    try:
+        if response['NextToken']:
+            NextToken = response['NextToken']
+            get_ec2_data(stop_start_input, Token=NextToken)
+    except Exception as e:
+        pass
 
 
 # for each instanceID, stop or start instances based on sys argv
