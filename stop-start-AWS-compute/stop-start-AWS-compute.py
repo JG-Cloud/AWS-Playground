@@ -98,7 +98,7 @@ def stop_start_ec2s(InstanceId, InstanceName, stop_start_input):
             InstanceId,
             ]
         )
-        pprint(start_response)
+        pprint(start_response['StartingInstances'])
 
     # print list of instanceIDs/Names that were stopped or started
     print(f"Instance={InstanceId}:{InstanceName}\n")
